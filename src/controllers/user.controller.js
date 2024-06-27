@@ -6,16 +6,7 @@ import { uploadCloudinary } from "../utils/cloudinary.js";
 
 const registerUser = asyncHandler(async (req, res) => {
     const { email, fullName, username, password } = req.body;
-    console.log(
-        "email: ",
-        email,
-        "\nfullName: ",
-        fullName,
-        "\nusername: ",
-        username,
-        "\npassword: ",
-        password
-    );
+    // console.log("email: ",email,"\nfullName: ",fullName,"\nusername: ",username,"\npassword: ",password);
 
     if (
         [email, fullName, username, password].some(
@@ -23,18 +14,26 @@ const registerUser = asyncHandler(async (req, res) => {
         )
     )
         throw new ApiError(400, "Fill all required fields");
+
     const existedUser = await User.findOne({ $or: [{ username }, { email }] });
 
     if (existedUser) throw new ApiError(409, "User Already Exist");
 
     const avatarLocalPath = req.files?.avatar[0]?.path;
-    const coverImageLocalPath = req.files?.coverImage[0]?.path;
+
+    let coverImageLocalPath;
+    if (
+        req.files &&
+        Array.isArray(req.files.coverImage) &&
+        req.files.coverImage.length > 0
+    )
+        coverImageLocalPath = req.files.coverImage[0].path;
 
     if (!avatarLocalPath) throw new ApiError(400, "Avatar is Required");
 
     const avatar = await uploadCloudinary(avatarLocalPath);
     const coverImage = await uploadCloudinary(coverImageLocalPath);
-    
+
     if (!avatar) throw new ApiError(400, "Avatar File is Required");
 
     const user = await User.create({
