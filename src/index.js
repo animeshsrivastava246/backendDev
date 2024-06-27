@@ -6,7 +6,6 @@ dotenv.config({
     path: "./.env",
 });
 const port = process.env.PORT || 8000;
-console.info("testing");
 connectDB()
     .then(() => {
         app.on("error", (error) => {
