@@ -248,6 +248,8 @@ const updateUserCoverImg = asyncHandler(async (req, res) => {
         );
 });
 
+const getUserChannelProfile = asyncHandler(async (req, res) => {});
+
 export {
     registerUser,
     loginUser,
@@ -258,4 +260,5 @@ export {
     updateAccountDetails,
     updateUserAvatar,
     updateUserCoverImg,
+    getUserChannelProfile
 };
