@@ -4,7 +4,7 @@ const tweetSchema = new Schema(
     {
         content: {
             type: String,
-            required: true,
+            required: [true, "Content Required"],
         },
         owner: {
             type: Schema.Types.ObjectId,

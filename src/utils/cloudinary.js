@@ -19,10 +19,27 @@ const uploadCloudinary = async (localFilePath) => {
             return result;
         }
     } catch (error) {
-        console.log("Cloudinary :: Error Upload :: ", error);
+        console.error("Cloudinary :: Error Upload :: ", error);
         fs.unlinkSync(localFilePath); // remove locally saved temp file since upload failed
         return null;
     }
 };
 
-export { uploadCloudinary };
+const deleteCloudinary = async (public_id, resource_type = "image") => {
+    try {
+        if (!public_id) return null;
+        else {
+            //delete file from cloudinary
+            const result = await cloudinary.uploader.destroy(public_id, {
+                resource_type: `${resource_type}`,
+            });
+            // console.info("Cloudinary :: File Delete Success");
+            return result;
+        }
+    } catch (error) {
+        console.error("Cloudinary :: Error Delete :: ", error);
+        return null;
+    }
+};
+
+export { uploadCloudinary, deleteCloudinary };

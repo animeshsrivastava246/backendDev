@@ -6,7 +6,7 @@ const userSchema = new Schema(
     {
         username: {
             type: String,
-            required: true,
+            required: [true, "Username Required"],
             unique: true,
             index: true,
             lowercase: true,
@@ -14,23 +14,29 @@ const userSchema = new Schema(
         },
         email: {
             type: String,
-            required: true,
+            required: [true, "E-mail Required"],
             unique: true,
             lowercase: true,
             trim: true,
         },
         fullName: {
             type: String,
-            required: true,
+            required: [true, "Full Name Required"],
             trim: true,
             index: true,
         },
         avatar: {
-            type: String, //url
+            type: {
+                public_id: String,
+                url: String, // cloudinary url
+            },
             required: true,
         },
         coverImage: {
-            type: String, //url
+            type: {
+                public_id: String,
+                url: String, // cloudinary url
+            },
         },
         watchHistory: [
             {
@@ -55,35 +61,31 @@ userSchema.pre("save", async function (next) {
     if (!this.isModified("password")) return next();
     else {
         this.password = await bcrypt.hash(this.password, 10);
-        next();
+        return next();
     }
 });
 
-userSchema.methods.isPasswordCorrect = async function (password) {
-    return await bcrypt.compare(password, this.password);
-};
-
-userSchema.methods.generateAccessToken = function () {
-    return jwt.sign(
-        {
-            _id: this._id,
-            email: this.email,
-            username: this.username,
-            fullName: this.fullName,
-        },
-        process.env.ACCESS_TOKEN_SECRET,
-        { expiresIn: process.env.ACCESS_TOKEN_EXPIRY }
-    );
-};
-
-userSchema.methods.generateRefreshToken = function () {
-    return jwt.sign(
-        {
-            _id: this._id,
-        },
-        process.env.ACCESS_TOKEN_SECRET,
-        { expiresIn: process.env.ACCESS_TOKEN_EXPIRY }
-    );
+userSchema.methods = {
+    isPasswordCorrect: async function (password) {
+        return await bcrypt.compare(password, this.password);
+    },
+    generateAccessToken: function () {
+        return jwt.sign(
+            {
+                _id: this._id,
+                email: this.email,
+                username: this.username,
+                fullName: this.fullName,
+            },
+            process.env.ACCESS_TOKEN_SECRET,
+            { expiresIn: process.env.ACCESS_TOKEN_EXPIRY }
+        );
+    },
+    generateRefreshToken: function () {
+        return jwt.sign({ _id: this._id }, process.env.ACCESS_TOKEN_SECRET, {
+            expiresIn: process.env.ACCESS_TOKEN_EXPIRY,
+        });
+    },
 };
 
 const User = mongoose.model("User", userSchema);
