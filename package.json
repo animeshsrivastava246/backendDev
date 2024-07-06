@@ -4,10 +4,13 @@
     "description": "Backend Development",
     "main": "index.js",
     "type": "module",
+    "engines": {
+        "node": "16.x"
+    },
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "dev": "nodemon src/index.js",
-        "dev2": "nodemon -r dotenv/config --experimental-json-modules src/index.js"
+        "start": "nodemon src/index.js",
+        "dev": "nodemon -r dotenv/config --experimental-json-modules src/index.js"
     },
     "keywords": [
         "javascript",
