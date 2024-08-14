@@ -5,7 +5,7 @@ import ApiResponse from "../utils/ApiResponse.js";
 import { uploadCloudinary, deleteCloudinary } from "../utils/cloudinary.js";
 import { Comment } from "../models/comment.model.js";
 import { Like } from "../models/like.model.js";
-import { User } from "../models/user.model.js";
+import User from "../models/user.model.js";
 import { Video } from "../models/video.model.js";
 
 // get all videos based on query, sort, pagination
