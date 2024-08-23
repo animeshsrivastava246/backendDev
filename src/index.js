@@ -1,4 +1,4 @@
-// require('dotenv').config({path: './env'})
+// require('dotenv').config({path: './env'})    - We use this with {type: commonjs} in package.json
 import dotenv from "dotenv";
 import connectDB from "./db/db.js";
 import app from "./app.js";
