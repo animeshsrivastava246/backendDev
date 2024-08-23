@@ -19,10 +19,15 @@
     "author": "Animesh Srivastava",
     "license": "ISC",
     "devDependencies": {
+        "@types/cookie-parser": "^1.4.7",
+        "@types/cors": "^2.8.17",
+        "@types/express": "^4.17.21",
+        "@types/morgan": "^1.9.9",
         "nodemon": "^3.1.3",
         "prettier": "^3.3.2"
     },
     "dependencies": {
+        "backenddev": "file:",
         "bcrypt": "^5.1.1",
         "cloudinary": "^2.2.0",
         "cookie-parser": "^1.4.6",
